@@ -1,6 +1,7 @@
 package com.example.ratelimiterservice.controller;
 
 import com.example.ratelimiterservice.service.InMemoryRateLimiterService;
+import com.example.ratelimiterservice.service.RedisRateLimiterService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RateLimiterController {
 
-    private final InMemoryRateLimiterService rateLimiterService;
+    private final RedisRateLimiterService rateLimiterService;
 
-    public RateLimiterController(InMemoryRateLimiterService rateLimiterService) {
+    public RateLimiterController(RedisRateLimiterService rateLimiterService) {
         this.rateLimiterService = rateLimiterService;
     }
 
