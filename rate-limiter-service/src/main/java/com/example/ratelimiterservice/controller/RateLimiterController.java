@@ -1,34 +1,41 @@
 package com.example.ratelimiterservice.controller;
 
-import com.example.ratelimiterservice.service.InMemoryRateLimiterService;
 import com.example.ratelimiterservice.service.RedisRateLimiterService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RestController
 public class RateLimiterController {
 
     private final RedisRateLimiterService rateLimiterService;
+    private final WebClient webClient;
+
 
     public RateLimiterController(RedisRateLimiterService rateLimiterService) {
         this.rateLimiterService = rateLimiterService;
+        this.webClient = WebClient.builder().baseUrl("http://localhost:8081").build();
     }
 
-    @GetMapping("/api/limited")
-    public ResponseEntity<String> getLimitedResource(HttpServletRequest request) {
+    @GetMapping("/api/products")
+    public Mono<ResponseEntity<String>> getLimitedResource(HttpServletRequest request) {
         // Use the client's IP address as the key for rate limiting
         String ipAddress = request.getRemoteAddr();
 
         if (rateLimiterService.isAllowed(ipAddress)) {
-            // Return 200 OK if allowed
-            return ResponseEntity.ok("Success! Resource accessed.");
+            // If allowed, forward the request to the product-service
+            return webClient.get()
+                    .uri("/products")
+                    .retrieve()
+                    .toEntity(String.class);
         } else {
-            // Return 429 Too Many Requests if denied
-            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                    .body("Error: Too many requests. Please try again later.");
+            // If denied, return 429 Too Many Requests immediately
+            return Mono.just(ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                    .body("Error: Too many requests. Please try again later."));
         }
     }
 }

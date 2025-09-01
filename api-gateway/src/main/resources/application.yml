@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: rate-limiter-route
+              uri: http://localhost:8082 # Forward to our rate-limiter-service
+              predicates:
+                - Path=/api/** # Match any request starting with /api/
