@@ -1,7 +1,6 @@
 package com.example.ratelimiterservice.controller;
 
 import com.example.ratelimiterservice.service.RedisRateLimiterService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 @RestController
 public class RateLimiterController {
@@ -25,9 +27,9 @@ public class RateLimiterController {
     }
 
     @GetMapping("/api/products")
-    public Mono<ResponseEntity<String>> getLimitedResource(HttpServletRequest request) {
+    public Mono<ResponseEntity<String>> getLimitedResource(ServerWebExchange exchange) {
         // Use the client's IP address as the key for rate limiting
-        String ipAddress = request.getRemoteAddr();
+        String ipAddress = Objects.requireNonNull(exchange.getRequest().getRemoteAddress()).getAddress().getHostAddress();
         log.info("Received request for /api/products from IP: {}", ipAddress);
 
         if (rateLimiterService.isAllowed(ipAddress)) {
