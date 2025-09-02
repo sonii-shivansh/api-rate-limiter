@@ -23,7 +23,7 @@ public class RateLimiterController {
 
     public RateLimiterController(RedisRateLimiterService rateLimiterService) {
         this.rateLimiterService = rateLimiterService;
-        this.webClient = WebClient.builder().baseUrl("http://localhost:8081").build();
+        this.webClient = WebClient.builder().baseUrl("http://product-service:8081").build();
     }
 
     @GetMapping("/api/products")
