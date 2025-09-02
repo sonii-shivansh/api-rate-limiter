@@ -1,0 +1,23 @@
+name: k6 Performance Test
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  k6-test:
+    name: Run k6 Performance Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up k6
+        uses: k6io/setup-k6@v1
+
+      - name: Run docker-compose
+        run: docker-compose up -d --build
+
+      - name: Run k6 test
+        run: k6 run load-testing/benchmark.js
