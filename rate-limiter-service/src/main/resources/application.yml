@@ -24,3 +24,11 @@ resilience4j:
         automatic-transition-from-open-to-half-open-enabled: true
         wait-duration-in-open-state: 5s
         permitted-number-of-calls-in-half-open-state: 3
+
+  retry:
+    instances:
+      redis:
+        max-attempts: 3
+        wait-duration: 200ms
+        retry-exceptions:
+          - io.lettuce.core.RedisConnectionException
