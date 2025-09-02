@@ -1,6 +1,7 @@
 package com.example.ratelimiterservice.service;
 
 import com.example.ratelimiterservice.config.RateLimiterProperties;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class RedisRateLimiterService {
         this.rateLimiterProperties = rateLimiterProperties;
     }
 
+    @CircuitBreaker(name = "redis", fallbackMethod = "fallbackIsAllowed")
     public boolean isAllowed(String key) {
 
         String userKey = "rate:limiter:" + key;
@@ -38,6 +40,11 @@ public class RedisRateLimiterService {
         );
 
         return result == 1L;
-
     }
+
+    public boolean fallbackIsAllowed(String key, Throwable t) {
+        System.err.println("Circuit breaker is open. Allowing request for key: " + key + ". Error: " + t.getMessage());
+        return true;
+    }
+
 }
