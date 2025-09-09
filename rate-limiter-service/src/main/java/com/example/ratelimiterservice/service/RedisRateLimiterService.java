@@ -27,13 +27,16 @@ public class RedisRateLimiterService {
         this.rateLimiterProperties = rateLimiterProperties;
     }
 
+    public boolean isAllowed(String key){
+        return isAllowed(key, 1L);
+    }
+
     @CircuitBreaker(name = "redis", fallbackMethod = "fallbackIsAllowed")
     @Retry(name = "redis")
-    public boolean isAllowed(String key) {
+    public boolean isAllowed(String key, long requestedTokens) {
 
         String userKey = "rate:limiter:" + key;
         long currentTime = Instant.now().getEpochSecond();
-        long requestedTokens = 1L;
         double refillRatePerSecond = rateLimiterProperties.getRefillRatePerMinute() / 60.0;
 
         Long result = redisTemplate.execute(
