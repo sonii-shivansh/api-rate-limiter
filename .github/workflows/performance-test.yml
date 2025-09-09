@@ -13,6 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Build Java Services with Maven
+        run: |
+          ./api-gateway/mvnw -B package --file ./api-gateway/pom.xml
+          ./product-service/mvnw -B package --file ./product-service/pom.xml
+          ./rate-limiter-service/mvnw -B package --file ./rate-limiter-service/pom.xml
+
       - name: Run Docker Compose
         run: docker compose up -d --build
 
