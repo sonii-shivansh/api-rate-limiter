@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Java Services with Maven
         run: |
-          ./api-gateway/mvnw -B package --file ./api-gateway/pom.xml
+          chmod +x ./api-gateway/mvnw -B package --file ./api-gateway/pom.xml
           ./product-service/mvnw -B package --file ./product-service/pom.xml
           ./rate-limiter-service/mvnw -B package --file ./rate-limiter-service/pom.xml
 
