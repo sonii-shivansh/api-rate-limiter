@@ -13,11 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up k6
-        uses: grafana/k6-action@v0.3.1
-
       - name: Run docker-compose
         run: docker-compose up -d --build
 
-      - name: Run k6 test
-        run: k6 run load-testing/benchmark.js
+      - name: Run k6 local test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: load-testing/benchmark.js
