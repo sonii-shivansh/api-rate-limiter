@@ -13,11 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up k6
-        uses: k6io/setup-k6@v1
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
 
-      - name: Run docker-compose
-        run: docker-compose up -d --build
+      - name: Build Java Services with Maven
+        run: |
+          chmod +x ./api-gateway/mvnw ./product-service/mvnw ./rate-limiter-service/mvnw
+          ./api-gateway/mvnw -B package --file ./api-gateway/pom.xml
+          ./product-service/mvnw -B package --file ./product-service/pom.xml
+          ./rate-limiter-service/mvnw -B package --file ./rate-limiter-service/pom.xml
 
-      - name: Run k6 test
-        run: k6 run load-testing/benchmark.js
+      - name: Run Docker Compose
+        run: docker compose up -d --build
+
+      - name: Run k6 local test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: load-testing/benchmark.js
