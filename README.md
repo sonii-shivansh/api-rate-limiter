@@ -147,3 +147,11 @@ curl -i http://localhost:8080/api/products
 # Run this 11 times in a loop to see the rate limit in action
 1..11 | ForEach-Object { curl http://localhost:8080/api/products }
 ```
+
+## Contributing
+
+We welcome contributions from the open-source community! If you're looking to contribute, please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
+
+[![Hacktoberfest](https://img.shields.io/badge/Hacktoberfest-2025-orange.svg)](https://hacktoberfest.com/)
+
+We have a number of ["good first issues"](https://github.com/sonii-shivansh/api-rate-limiter/labels/good%20first%20issue) that are perfect for new contributors. We're excited to see your pull requests!
