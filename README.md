@@ -4,6 +4,8 @@ This project implements a distributed, high-performance API rate limiter designe
 
 The system is architected as a set of independent microservices orchestrated with Docker, featuring a central API Gateway that seamlessly integrates the rate-limiting logic.
 
+[![Hacktoberfest](https://img.shields.io/badge/Hacktoberfest-2025-orange.svg)](https://hacktoberfest.com/)
+
 ## System Architecture
 
 The architecture consists of four main components that work together to process and rate-limit incoming requests:
@@ -152,6 +154,16 @@ curl -i http://localhost:8080/api/products
 
 We welcome contributions from the open-source community! If you're looking to contribute, please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
 
-[![Hacktoberfest](https://img.shields.io/badge/Hacktoberfest-2025-orange.svg)](https://hacktoberfest.com/)
-
 We have a number of ["good first issues"](https://github.com/sonii-shivansh/api-rate-limiter/labels/good%20first%20issue) that are perfect for new contributors. We're excited to see your pull requests!
+
+## Project Roadmap
+
+Here are some of the features and improvements we have planned for the future.
+
+* **Implement Different Rate-Limiting Algorithms**: Add support for other algorithms like Sliding Window Log.
+* **Configuration via Environment Variables**: Allow rate limit values to be configured through environment variables for more flexible deployments.
+* **Enhanced Monitoring and Metrics**: Integrate with Prometheus and Grafana to provide a dashboard for visualizing rate-limiting metrics.
+* **Support for Authenticated Users**: Extend the rate-limiting logic to support different limits for authenticated vs. anonymous users.
+* **More Granular Rate Limits**: Allow for different rate limits based on API endpoints.
+
+We're open to new ideas! If you have a suggestion, please open an issue to discuss it.
