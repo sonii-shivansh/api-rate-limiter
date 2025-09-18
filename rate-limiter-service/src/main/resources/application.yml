@@ -11,8 +11,8 @@ server:
   port: 8082
 
 rate-limiter:
-  bucket-capacity: 10
-  refill-rate-per-minute: 10
+  bucket-capacity: ${RATE_LIMITER_BUCKET_CAPACITY}
+  refill-rate-per-minute: ${RATE_LIMITER_REFILL_RATE_PER_MINUTE}
 
 resilience4j:
   circuitbreaker:
