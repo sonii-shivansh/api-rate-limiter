@@ -21,10 +21,24 @@ public class RateLimiterController {
 
     private static final Logger log = LoggerFactory.getLogger(RateLimiterController.class);
 
+    /**
+     * Constructs a RateLimiterController with a given RedisrateLimterSERVICE
+     */
+
     public RateLimiterController(RedisRateLimiterService rateLimiterService) {
         this.rateLimiterService = rateLimiterService;
         this.webClient = WebClient.builder().baseUrl("http://product-service:8081").build();
     }
+
+    /**
+     * Handles GET requests to "/api/products" and applies rate limiting based on the client's IP address.
+     * <p>
+     * If the client is allowed, forwards the request to the product-service.
+     * If the client exceeds the rate limit, responds with HTTP 429 Too Many Requests.
+     *
+     * @param exchange the ServerWebExchange containing request and response information
+     * @return a Mono wrapping ResponseEntity with either the product data or an error message
+     */
 
     @GetMapping("/api/products")
     public Mono<ResponseEntity<String>> getLimitedResource(ServerWebExchange exchange) {
