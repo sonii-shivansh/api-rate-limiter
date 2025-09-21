@@ -1,0 +1,41 @@
+name: Community Welcome Bot
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  thank_contributor:
+    name: Thank Contributor
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Post "Thank You" Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Get the author of the issue or comment and the owner of the repository
+            const commenter = context.actor;
+            const owner = context.repo.owner;
+
+            // Do not post a comment if the author is the repository owner
+            if (commenter === owner) {
+              console.log("Commenter is the repo owner. No comment will be posted.");
+              return;
+            }
+
+            // Craft a friendly message
+            const message = `Hi @${commenter}! Thank you so much for your contribution. We appreciate you taking the time to help improve this project.`;
+
+            // Post the comment on the issue or pull request
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: message
+            });
