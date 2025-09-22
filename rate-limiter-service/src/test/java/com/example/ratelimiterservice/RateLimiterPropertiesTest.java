@@ -31,8 +31,8 @@ import static org.junit.jupiter.api.Assertions.*;
         private RateLimiterProperties overriddenProps;
         @Test
         void testOverriddenValues() {
-            assertEquals(20, overriddenProps.getBucketCapacity());
-            assertEquals(20.0, overriddenProps.getRefillRatePerMinute());
+            assertEquals(200, overriddenProps.getBucketCapacity());
+            assertEquals(120.0, overriddenProps.getRefillRatePerMinute());
         }
 
     }
