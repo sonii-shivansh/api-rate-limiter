@@ -13,6 +13,7 @@ server:
 rate-limiter:
   bucket-capacity: 10
   refill-rate-per-minute: 10
+  request-cost:1 #New property with default value
 
 resilience4j:
   circuitbreaker:
