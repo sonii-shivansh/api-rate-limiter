@@ -22,7 +22,9 @@ services:
       - redis
       - product-service
     environment:
-      - spring.redis.host=my-redis
+      - RATE_LIMITER_BUCKET_CAPACITY=10
+      - RATE_LIMITER_REFILL_RATE_PER_MINUTE=10
+      - SPRING_DATA_REDIS_HOST=my-redis
 
   api-gateway:
     build: ./api-gateway
