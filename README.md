@@ -136,6 +136,30 @@ rate-limiter:
 With the default settings, each IP address is allowed 10 requests per minute.
 
 
+### Configure via Environment Variables (Recommended for Containers)
+
+You can override the same properties via environment variables using Spring Boot's relaxed binding.
+
+- Use these environment variables for the Rate Limiter Service:
+  - `RATE_LIMITER_BUCKET_CAPACITY`
+  - `RATE_LIMITER_REFILL_RATE_PER_MINUTE`
+
+These map to the YAML properties `rate-limiter.bucket-capacity` and `rate-limiter.refill-rate-per-minute` respectively. Spring automatically converts underscores to dots and respects kebab-case.
+
+Example Docker Compose snippet (already configured in this repo):
+
+```
+rate-limiter-service:
+  build: ./rate-limiter-service
+  environment:
+    - RATE_LIMITER_BUCKET_CAPACITY=10
+    - RATE_LIMITER_REFILL_RATE_PER_MINUTE=10
+    - SPRING_DATA_REDIS_HOST=my-redis
+```
+
+You can change the values (e.g., `RATE_LIMITER_BUCKET_CAPACITY=100` and `RATE_LIMITER_REFILL_RATE_PER_MINUTE=60`) without modifying the application code or the `application.yml`.
+
+
 ## API Endpoint & Testing
 Once the services are running, you can test the rate limiter by making requests to the protected endpoint through the API Gateway.
 * **URL**: ```http://localhost:8080/api/products```
